@@ -87,7 +87,9 @@ class MainPage(webapp.RequestHandler):
         game_key = self.request.get('g')
         game = None
         if user:
+            logging.info('user found')
             if not game_key:
+                logging.info('no game key found')
                 game_key = user.user_id()
                 return_link = 'http://leetcoin-tactoe.appspot.com/?g=' + game_key
                 server_api_key, server_secret, server_key = serverCreate('leetcointactoe.appspot.com', return_link, title)
@@ -108,9 +110,15 @@ class MainPage(webapp.RequestHandler):
                 
             else:
                 game = Game.get_by_key_name(game_key)
-                if not game.userO:
-                    game.userO = user
-                    game.put()
+                
+                if not str(game.userX) == str(user):
+                    logging.info('not user X')
+                
+                    if not game.userO:
+                        logging.info('adding user for player O')
+                        
+                        game.userO = user
+                        game.put()
                   
                 deferred.defer(check_authorization, str(user), game.key(), playerid='O', _countdown=1)
 
