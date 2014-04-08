@@ -1,0 +1,14 @@
+<html>
+  <head>
+  </head>
+  <body>
+
+{% for provider in openid_providers %}
+
+    <a href="{{ provider[1] }}" class=" btn-new btn-deposit">Login with {{ provider[0] }}</a>
+
+{% endfor %}
+
+
+  </body>
+</html>
