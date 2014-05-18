@@ -12,6 +12,7 @@ class Player():
     def to_dict(self):
         return ({
                 u'key': self.key,
+                u'platformID': self.key,
                 u'kills': self.kills,
                 u'deaths': self.deaths,
                 u'name': self.name,
