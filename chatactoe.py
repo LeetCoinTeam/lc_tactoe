@@ -92,7 +92,7 @@ class MainPage(webapp.RequestHandler):
                 logging.info('no game key found')
                 game_key = user.user_id()
                 return_link = 'http://leetcoin-tactoe.appspot.com/?g=' + game_key
-                server_api_key, server_secret, server_key = serverCreate('leetcointactoe.appspot.com', return_link, title)
+                server_api_key, server_secret, server_key = serverCreate('leetcoin-tactoe.appspot.com', return_link, title)
                 
                 game = Game(key_name = game_key,
                             userX = user,
@@ -122,7 +122,7 @@ class MainPage(webapp.RequestHandler):
                   
                 deferred.defer(check_authorization, str(user), game.key(), playerid='O', _countdown=1)
 
-            game_link = 'https://dev01-dot-1337coin.appspot.com/server/view/' + game.server_key
+            game_link = 'https://www.leetcoin.com/server/view/' + game.server_key
 
             if game:
                 token = channel.create_channel(user.user_id() + game_key)
