@@ -33,12 +33,10 @@ from game import Game
 from game_updater import GameUpdater
 from wins import Wins
 
-from openid.views.openid_handler import OpenIDHandler
-#from openid.views.openid_custom import OpenIDCustomHandler
 
 ## leetcoin tools
-from server_create import serverCreate
-from activate_player import *
+## from server_create import serverCreate
+## from activate_player import *
 
 
 class GameFromRequest():
@@ -71,13 +69,24 @@ class OpenedPage(webapp.RequestHandler):
         game = GameFromRequest(self.request).get_game()
         GameUpdater(game).send_update()
 
-
 class MainPage(webapp.RequestHandler):
+    """The main UI page, renders the 'index.html' template."""
+
+    def get(self):
+        template_values = {
+
+                          }
+        path = os.path.join(os.path.dirname(__file__), 'index.html')
+
+        self.response.out.write(template.render(path, template_values))
+
+class MatchmakerPage(webapp.RequestHandler):
     """The main UI page, renders the 'index.html' template."""
 
     def get(self):
         """Renders the main page. When this page is shown, we create a new
         channel to push asynchronous updates to the client."""
+
         user = users.get_current_user()
         
         if 'http' in str(user):
@@ -90,26 +99,33 @@ class MainPage(webapp.RequestHandler):
             logging.info('user found')
             if not game_key:
                 logging.info('no game key found')
-                game_key = user.user_id()
-                return_link = 'http://leetcoin-tactoe.appspot.com/?g=' + game_key
-                server_api_key, server_secret, server_key = serverCreate('leetcoin-tactoe.appspot.com', return_link, title)
                 
-                game = Game(key_name = game_key,
-                            userX = user,
-                            moveX = True,
-                            board = '         ',
-                            server_api_key = server_api_key,
-                            server_secret = server_secret,
-                            server_key = server_key)
-                game.put()
+                #game_key = user.user_id()
+                #return_link = 'http://leetcoin-tactoe.appspot.com/?g=' + game_key
+                #server_api_key, server_secret, server_key = serverCreate('leetcoin-tactoe.appspot.com', return_link, title)
+                
+                
                 
                 ## Fire off a task to check to see if this user has authorized play on leetcoin.com
-                deferred.defer(check_authorization, str(user), game.key(), playerid='X', _countdown=10)
+                ## deferred.defer(check_authorization, str(user), game.key(), playerid='X', _countdown=10)
                 
                 #result = check_authorization(str(user), game.server_secret, game.server_api_key)
                 
             else:
                 game = Game.get_by_key_name(game_key)
+                
+                if not game:
+                    game = Game(key_name = game_key,
+                                userX = user,
+                                moveX = True,
+                                board = '         ',
+                                match_key = game_key,
+                                #server_api_key = server_api_key,
+                                #server_secret = server_secret,
+                                #server_key = server_key
+                                )
+                    game.put()
+                
                 
                 if not str(game.userX) == str(user):
                     logging.info('not user X')
@@ -120,9 +136,9 @@ class MainPage(webapp.RequestHandler):
                         game.userO = user
                         game.put()
                   
-                deferred.defer(check_authorization, str(user), game.key(), playerid='O', _countdown=1)
+                #deferred.defer(check_authorization, str(user), game.key(), playerid='O', _countdown=1)
 
-            game_link = 'https://www.leetcoin.com/server/view/' + game.server_key
+            game_link = 'https://www.leetcoin.com/server/view/' + game_key
 
             if game:
                 token = channel.create_channel(user.user_id() + game_key)
@@ -133,7 +149,7 @@ class MainPage(webapp.RequestHandler):
                                    'initial_message': GameUpdater(game).get_game_message(),
                                    'my_google_user': str(user)
                                   }
-                path = os.path.join(os.path.dirname(__file__), 'index.html')
+                path = os.path.join(os.path.dirname(__file__), 'matchmaker.html')
 
                 self.response.out.write(template.render(path, template_values))
             else:
@@ -147,9 +163,10 @@ class MainPage(webapp.RequestHandler):
 
 application = webapp.WSGIApplication([
     ('/', MainPage),
+    ('/mm', MatchmakerPage),
     ('/opened', OpenedPage),
     ('/move', MovePage),
-    ('/_ah/login_required', OpenIDHandler),
+    #('/_ah/login_required', OpenIDHandler),
     #('/openid_login_custom', OpenIDCustomHandler)
     ], debug=True)
     

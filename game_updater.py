@@ -4,7 +4,8 @@ import json as simplejson
 from google.appengine.api import channel
 
 from wins import Wins
-from match_results import setMatchResults
+#from match_results import setMatchResults
+from matchmaker_results import setMatchMakerResults
 from deactivate_player import deactivatePlayer
 
 
@@ -22,7 +23,7 @@ class GameUpdater():
           'moveX': self.game.moveX,
           'winner': self.game.winner,
           'winningBoard': self.game.winning_board,
-          'server_key': self.game.server_key,
+          #'server_key': self.game.server_key,
           'userXleetcoinKey' : self.game.userXleetcoinKey or '',
           'userOleetcoinKey' :self.game.userOleetcoinKey or '',
         }
@@ -66,15 +67,15 @@ class GameUpdater():
                     deaths = [1,0]
                     ranks = [1599, 1601]
                     
-                setMatchResults(self.game, 'leetcointactoe', player_keys, player_names, weapons, kills, deaths, ranks)
+                setMatchMakerResults(self.game, 'leetcointactoe', player_keys, player_names, weapons, kills, deaths, ranks)
                 
                 ## deactivate players
-                if potential_winner == self.game.userX.user_id():
-                    deactivatePlayer(self.game, str(self.game.userX), 1601, 10980)
-                    deactivatePlayer(self.game, str(self.game.userO), 1599, 9000)
-                else:
-                    deactivatePlayer(self.game, str(self.game.userO), 1601, 10980)
-                    deactivatePlayer(self.game, str(self.game.userX), 1599, 9000)
+                #if potential_winner == self.game.userX.user_id():
+                #    deactivatePlayer(self.game, str(self.game.userX), 1601, 10980)
+                #    deactivatePlayer(self.game, str(self.game.userO), 1599, 9000)
+                #else:
+                #    deactivatePlayer(self.game, str(self.game.userO), 1601, 10980)
+                #    deactivatePlayer(self.game, str(self.game.userX), 1599, 9000)
 
                 return
 
