@@ -119,6 +119,7 @@ class MatchmakerPage(webapp.RequestHandler):
                                 userX = user,
                                 moveX = True,
                                 board = '         ',
+                                moves = 0,
                                 match_key = game_key,
                                 #server_api_key = server_api_key,
                                 #server_secret = server_secret,

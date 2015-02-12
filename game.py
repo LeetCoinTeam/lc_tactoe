@@ -8,6 +8,8 @@ class Game(db.Model):
     moveX = db.BooleanProperty()
     winner = db.StringProperty()
     winning_board = db.StringProperty()
+    moves = db.IntegerProperty()
+    tied = db.BooleanProperty()
     ## We need to keep track of the server key which is assigned by leetcoin
     #server_key = db.StringProperty()
     #server_api_key = db.StringProperty()

@@ -23,7 +23,8 @@ class GameUpdater():
           'moveX': self.game.moveX,
           'winner': self.game.winner,
           'winningBoard': self.game.winning_board,
-          #'server_key': self.game.server_key,
+          
+          'tied': self.game.tied,
           'userXleetcoinKey' : self.game.userXleetcoinKey or '',
           'userOleetcoinKey' :self.game.userOleetcoinKey or '',
         }
@@ -47,6 +48,23 @@ class GameUpdater():
             # X just moved, check for X wins
             wins = Wins().x_wins
             potential_winner = self.game.userX.user_id()
+            
+        ## Check for a draw.
+        if self.game.moves >= 8:
+            player_keys = [str(self.game.userX), str(self.game.userO)]
+            player_names = [str(self.game.userX), str(self.game.userO)]
+            weapons = ['X', 'O']
+            
+
+            kills = [0,0]
+            deaths = [0,0]
+            ranks = [1600, 1600]
+
+                
+            setMatchMakerResults(self.game, 'leetcointactoe', player_keys, player_names, weapons, kills, deaths, ranks)
+            
+            return
+            
   
         for win in wins:
             if win.match(self.game.board):
@@ -85,6 +103,8 @@ class GameUpdater():
         logging.info('self.game.userX: %s' %self.game.userX)
         logging.info('self.game.userO: %s' %self.game.userO)
         
+        
+        
         if position >= 0 and str(user) == str(self.game.userX) or str(user) == str(self.game.userO):
             logging.info('position >= 0 and user == self.game.userX or user == self.game.userO')
             if self.game.moveX == (str(user) == str(self.game.userX)):
@@ -94,7 +114,11 @@ class GameUpdater():
                     boardList[position] = 'X' if self.game.moveX else 'O'
                     self.game.board = "".join(boardList)
                     self.game.moveX = not self.game.moveX
+                    self.game.moves = self.game.moves +1
+                    logging.info('self.game.moves: %s' %self.game.moves)
                     self.check_win()
+                    if self.game.moves >=9:
+                        self.game.tied = True
                     self.game.put()
                     self.send_update()
                     return

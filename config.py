@@ -10,9 +10,9 @@ local_testing = False
 
 if local_testing:
     url="localhost:10081"
-    developer_api_key = "xxxx"
-    developer_shared_secret = "xxxx"
+    developer_api_key = "xxx"
+    developer_shared_secret = "xxx"
 else:
     url="apitest-dot-1337coin.appspot.com"
-    developer_api_key = "xxxx"
-    developer_shared_secret = "xxxx"
+    developer_api_key = "xxx"
+    developer_shared_secret = "xxx"

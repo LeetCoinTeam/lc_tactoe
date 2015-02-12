@@ -107,6 +107,7 @@
           'their-move': 'none',
           'you-won': 'none',
           'you-lost': 'none',
+		  'you-tied': 'none',
           'board': 'block',
           'this-game': 'block',
         }; 
@@ -115,6 +116,8 @@
           display['other-player'] = 'block';
           display['board'] = 'none';
           display['this-game'] = 'none';
+        } else if (state.tied == true) {
+        	display['you-tied'] = 'block';
         } else if (state.winner == state.me) {
           display['you-won'] = 'block';
         } else if (state.winner != '') {
@@ -190,6 +193,7 @@
         state.moveX = newState.moveX;
         state.winner = newState.winner || "";
         state.winningBoard = newState.winningBoard || "";
+		state.tied = newState.tied || "";
 		state.userXleetcoinKey = newState.userXleetcoinKey || "";
 		state.userOleetcoinKey = newState.userOleetcoinKey || "";
         updateGame();
@@ -248,6 +252,9 @@
       </div>
       <div id='you-lost'>
         You lost this game.
+      </div>
+      <div id='you-tied'>
+        You tied this game.
       </div>
       <div id='board'>
         <div class='t l cell'><table><tr><td id='0'></td></tr></td></table></div>
