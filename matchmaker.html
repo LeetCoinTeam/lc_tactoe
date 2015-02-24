@@ -2,18 +2,71 @@
   <head>
       <script src='/_ah/channel/jsapi'></script>
       <style type='text/css'>
+      
+
+      
+        @font-face {
+            font-family: 'XO';
+            src: url('/fonts/XO.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+
+        }
+        
+        
+
+        
+        
         body {
-          font-family: 'Helvetica';
+          margin: 0;
+          font-family: Klavika-Regular;
+          background-image: url('/fonts/csgo.jpg');
+          background-size: cover;
+        }
+        
+        #header {
+          font-size: 36px;
+          font-weight: normal;
+          padding: 24px;
+          margin: 0;
+          background      : linear-gradient(to right, rgba(255,181,46,1) 0%, rgba(255,22,126,1) 100%);
+          color: white;
+          
+        }
+        
+        .status {
+          padding: 30px;
+          margin: 0;
+          background-color: #f1f1f1;
+          color: black
+          
+        }
+        
+        
+        .displaytext {
+          color      : white;
+          /* text-shadow: 0px 2px 2px rgba(0, 0, 0, 0.4); */
+          text-shadow: 0px 2px 3px rgba(0,0,0,0.5);
         }
 
         #board {
-          width:152px; 
-          height: 152px;
-          margin: 20px auto;
+          width: 260px; 
+          height: 260px;
+          margin: 90px auto 120px auto;
         }
         
         #display-area {
+          position: relative;
+          height: 100%;
           text-align: center;
+          -webkit-touch-callout: none;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+        
+        #footer {
         }
         
         #this-game {
@@ -28,20 +81,20 @@
         }
         
         td {
-          width: 50px;
-          height: 50px;
-          font-family: "Helvetica";
-          font-size: 16pt;
+          width: 80px;
+          height: 80px;
+          font-family: XO;
+          font-size: 50pt;
           text-align: center;
           vertical-align: middle;
-          margin:0px;
+          margin: 0px;
           padding: 0px;
         }
         
         div.cell {
           float: left;
-          width: 50px;
-          height: 50px;
+          width: 80px;
+          height: 80px;
           border: none;
           margin: 0px;
           padding: 0px;
@@ -49,29 +102,29 @@
         
         div.mark {
           position: absolute;
-          top: 15px;          
+          top: 15px;
         }
         
         div.l {
-          border-right: 1pt solid black;
+          border-right: 8pt solid black;
         }
         
         div.c {
         }
         
         div.r {
-          border-left: 1pt solid black;
+          border-left: 8pt solid black;
         }
         
         div.t {
-          border-bottom: 1pt solid black;
+          border-bottom: 8pt solid black;
         }
         
         div.m {
         }
         
         div.b {
-          border-top: 1pt solid black;
+          border-top: 8pt solid black;
         }
       </style>
   </head>
@@ -91,9 +144,9 @@
           if (state.winner != '' && state.winningBoard != '') {
             if (state.winningBoard[i] == state.board[i]) {
               if (state.winner == state.me) {
-                square.style.background = "green";
+                square.style.background = "#ccff00";
               } else {
-                square.style.background = "red";
+                square.style.background = "#ff909f";
               }
             } else {
               square.style.background = "white";
@@ -169,7 +222,7 @@
         for (i = 0; i < 9; i++) {
           if (i == id  && isMyMove()) {
             if (state.board[i] = ' ') {
-              color = 'lightBlue';
+              color = '#dedede';
             } else {
               color = 'lightGrey';
             }
@@ -228,47 +281,42 @@
 	  //]]>
     </script>
     <div id='display-area'>
-      <h2>LEETCOIN Tac Toe</h2>
-	  Based on <a href="https://code.google.com/p/channel-tac-toe">channel-tac-toe</a><br>
-	  <a href="https://github.com/LeetCoinTeam/lc_tactoe">source code available</a><br>
-	  <br><br>
-
-	  <br><br>
-	  
-
-	  
-      <div id='other-player' style='display:none'>
+      <h2 id="header" class="displaytext">Leetcoin-Tac-Toe</h2>
+      <div id='other-player'  class="status"style='display:none'>
         Waiting for another player to join.<br>
-
       </div>
-      <div id='your-move' style='display:none'>
+      <div id='your-move'  class="status"style='display:none'>
         Your move! Click a square to place your piece.
       </div>
-      <div id='their-move' style='display:none'>
+      <div id='their-move'  class="status"style='display:none'>
         Waiting for other player to move...
       </div>
-      <div id='you-won'>
+      <div id='you-won' class="status">
         You won this game!
       </div>
-      <div id='you-lost'>
+      <div id='you-lost' class="status">
         You lost this game.
       </div>
-      <div id='you-tied'>
+      <div id='you-tied' class="status">
         You tied this game.
       </div>
       <div id='board'>
-        <div class='t l cell'><table><tr><td id='0'></td></tr></td></table></div>
-        <div class='t c cell'><table><tr><td id='1'></td></tr></td></table></div>
-        <div class='t r cell'><table><tr><td id='2'></td></tr></td></table></div>
-        <div class='m l cell'><table><tr><td id='3'></td></tr></td></table></div>
-        <div class='m c cell'><table><tr><td id='4'></td></tr></td></table></div>
-        <div class='m r cell'><table><tr><td id='5'></td></tr></td></table></div>
-        <div class='b l cell'><table><tr><td id='6'></td></tr></td></table></div>
-        <div class='b c cell'><table><tr><td id='7'></td></tr></td></table></div>
-        <div class='b r cell'><table><tr><td id='8'></td></tr></td></table></div>
+        <div class='t l cell'><table><tr><td id='0'></td></tr></table></div>
+        <div class='t c cell'><table><tr><td id='1'></td></tr></table></div>
+        <div class='t r cell'><table><tr><td id='2'></td></tr></table></div>
+        <div class='m l cell'><table><tr><td id='3'></td></tr></table></div>
+        <div class='m c cell'><table><tr><td id='4'></td></tr></table></div>
+        <div class='m r cell'><table><tr><td id='5'></td></tr></table></div>
+        <div class='b l cell'><table><tr><td id='6'></td></tr></table></div>
+        <div class='b c cell'><table><tr><td id='7'></td></tr></table></div>
+        <div class='b r cell'><table><tr><td id='8'></td></tr></table></div>
       </div>
       <div id='this-game' float='top'>
 
+      </div>
+      <div id="footer">
+          Based on <a href="https://code.google.com/p/channel-tac-toe">channel-tac-toe</a><br>
+          <a href="https://github.com/LeetCoinTeam/lc_tactoe">source code available</a>
       </div>
     </div>
   </body>
