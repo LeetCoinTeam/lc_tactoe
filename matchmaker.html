@@ -81,6 +81,7 @@
         }
         
         td {
+          cursor: default;
           width: 80px;
           height: 80px;
           font-family: 'XO';
@@ -145,9 +146,9 @@
           if (state.winner != '' && state.winningBoard != '') {
             if (state.winningBoard[i] == state.board[i]) {
               if (state.winner == state.me) {
-                square.style.background = "#ccff00";
+                square.style.background = "#cecece";
               } else {
-                square.style.background = "#ff909f";
+                square.style.background = "#cecece";
               }
             } else {
               square.style.background = "white";
@@ -282,7 +283,7 @@
 	  //]]>
     </script>
     <div id='display-area'>
-      <h2 id="header" class="displaytext">Leetcoin-Tac-Toe</h2>
+      <h2 id="header" class="displaytext">Tic Tac Toe</h2>
       <div id='other-player'  class="status"style='display:none'>
         Waiting for another player to join.<br>
       </div>
